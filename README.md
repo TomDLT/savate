@@ -2,14 +2,11 @@
 
 This is a personal collection of tools to automatically save stuff during work.
 
-It is based on:
-
-- <https://github.com/bartman/git-wip>
-- personal code
+It is based on a custom fork of <https://github.com/bartman/git-wip> and some personal code.
 
 ## Install
 
-- Clone the repository and install with `make`:
+1. Clone the repository and install with `make`:
 
   ```console
   git clone https://github.com/tomdlt/savate.git
@@ -17,4 +14,6 @@ It is based on:
   python setup.py install
   ```
 
-- Copy `git-wip` in a place accessible by your path.
+2. Copy `git-wip` in a place accessible by your path.
+
+## Getting started
