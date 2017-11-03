@@ -1,4 +1,4 @@
-from .save import save_fig, save_data, load_data
+from .io import save_fig, save_data, load_data
 
 __version__ = '0.1'
 

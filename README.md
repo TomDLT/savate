@@ -12,8 +12,8 @@ It is based on:
 - Clone the repository and install with `make`:
 
   ```console
-  git clone https://github.com/tomdlt/savoto.git
-  cd savoto
+  git clone https://github.com/tomdlt/savate.git
+  cd savate
   make install
   ```
 
