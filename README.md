@@ -14,7 +14,7 @@ It is based on:
   ```console
   git clone https://github.com/tomdlt/savate.git
   cd savate
-  make install
+  python setup.py install
   ```
 
 - Copy `git-wip` in a place accessible by your path.
