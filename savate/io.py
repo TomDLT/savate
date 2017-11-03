@@ -9,7 +9,7 @@ from scipy import io
 
 
 # directory to save the plots
-PLOT_PATH = os.environ['HOME'] + '/work/docs/ardriv_plots/'
+SAVE_PATH = os.environ['HOME'] + '/work/docs/ardriv_plots/'
 
 
 def save_fig(fig, name, extension='.png', *args, **kwargs):
@@ -75,7 +75,7 @@ def load_data(name):
     return data
 
 
-def _compute_name(name, extension, overwrite=False, path_name=PLOT_PATH):
+def _compute_name(name, extension, overwrite=False, path_name=SAVE_PATH):
     """Compute a file name, with the script name in prefix and time in suffix
 
     Parameters
