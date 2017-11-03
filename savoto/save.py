@@ -95,7 +95,7 @@ def _compute_name(name, extension, overwrite=False, path_name=PLOT_PATH):
     filename: string
         A transformed filename
     """
-    script_name = get_calling_script()
+    script_name = _get_calling_script()
 
     # create directory with script name
     directory = path_name + script_name
@@ -124,7 +124,7 @@ def _compute_name(name, extension, overwrite=False, path_name=PLOT_PATH):
     return filename
 
 
-def get_calling_script():
+def _get_calling_script():
     """Get the calling script from the traceback stack"""
     stack = traceback.extract_stack()
 
@@ -157,7 +157,7 @@ def time_string():
 
 
 def commit_with_git_wip():
-    script_name = get_calling_script()
+    script_name = _get_calling_script()
     commit_message = "autosave called from " + script_name
 
     result = subprocess.run(["git", "wip", "save_silent", commit_message])
