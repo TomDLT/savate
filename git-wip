@@ -304,7 +304,7 @@ fi
 dbg "args: $@"
 
 case "$1" in
-save)
+save|save_silent)
 	WIP_COMMAND=$1
 	shift
 	if [ -n "$1" ]
@@ -329,6 +329,10 @@ esac
 
 case $WIP_COMMAND in
 save)
+	do_save "$WIP_MESSAGE" $@
+	;;
+save_silent)
+    EDITOR_MODE=true
 	do_save "$WIP_MESSAGE" $@
 	;;
 info)

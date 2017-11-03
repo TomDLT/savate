@@ -1,4 +1,5 @@
 import traceback
+import subprocess
 import os
 import time
 
@@ -14,6 +15,7 @@ PLOT_PATH = os.environ['HOME'] + '/work/docs/ardriv_plots/'
 def save_fig(fig, name, extension='.png', *args, **kwargs):
     """Save a matplotlib figure in proper directory with the time in filename
     """
+    commit_with_git_wip()
     save_name = _compute_name(name=name, extension=extension)
     fig.savefig(save_name, *args, **kwargs)
     print('Saved fig: %s' % save_name)
@@ -23,6 +25,7 @@ def save_fig(fig, name, extension='.png', *args, **kwargs):
 def save_data(data, name, overwrite=False):
     """Save the data in proper directory with the time in filename
     """
+    commit_with_git_wip()
     if isinstance(data, pd.DataFrame):
         save_name = _compute_name(name=name, extension='.csv',
                                   overwrite=overwrite)
@@ -92,25 +95,7 @@ def _compute_name(name, extension, overwrite=False, path_name=PLOT_PATH):
     filename: string
         A transformed filename
     """
-    # get the calling module from the traceback stack
-    stack = traceback.extract_stack()
-
-    script_path = None
-    for trace in stack:
-        if trace[2] == '<module>':
-            script_path = trace[0]
-    if script_path is None:
-        for trace in stack:
-            if '/run_' in trace[0]:
-                script_path = trace[0]
-    if script_path is None:
-        script_path = stack[-1][0]  # default
-
-    script_name = os.path.basename(script_path)
-    if script_name[:14] == '<ipython-input':
-        script_name = '<ipython>'
-    if script_name[-3:] == '.py':
-        script_name = script_name[:-3]
+    script_name = get_calling_script()
 
     # create directory with script name
     directory = path_name + script_name
@@ -139,9 +124,41 @@ def _compute_name(name, extension, overwrite=False, path_name=PLOT_PATH):
     return filename
 
 
+def get_calling_script():
+    """Get the calling script from the traceback stack"""
+    stack = traceback.extract_stack()
+
+    script_path = None
+    for trace in stack:
+        if trace[2] == '<module>':
+            script_path = trace[0]
+    if script_path is None:
+        for trace in stack:
+            if '/run_' in trace[0]:
+                script_path = trace[0]
+    if script_path is None:
+        script_path = stack[-1][0]  # default
+
+    script_name = os.path.basename(script_path)
+    if script_name[:14] == '<ipython-input':
+        script_name = '<ipython>'
+    if script_name[-3:] == '.py':
+        script_name = script_name[:-3]
+
+    return script_name
+
+
 def time_string():
     """
     Get the time in a string
     """
     t = time.localtime(time.time())
     return '%4d-%02d-%02d-%02dh%02d' % (t[0], t[1], t[2], t[3], t[4])
+
+
+def commit_with_git_wip():
+    script_name = get_calling_script()
+    commit_message = "autosave called from " + script_name
+
+    result = subprocess.run(["git", "wip", "save_silent", commit_message])
+    return result
