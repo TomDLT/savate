@@ -48,10 +48,13 @@ trap 'rm -f "$TMP-*"' 0
 
 WIP_INDEX="$TMP-INDEX"
 
-WIP_PREFIX=refs/wip/
+WIP_PREFIX=refs/heads/
+WIP_SUFFIX=_wip
 WIP_COMMAND=
 WIP_MESSAGE=WIP
 EDITOR_MODE=false
+
+WIP_DEBUG=
 
 dbg() {
 	if test -n "$WIP_DEBUG"
@@ -161,7 +164,7 @@ do_save () {
 	dbg "files=$files"
 
 	local work_branch=$(get_work_branch)
-	local wip_branch="$WIP_PREFIX$work_branch"
+	local wip_branch="$WIP_PREFIX$work_branch$WIP_SUFFIX"
 
 	dbg "work_branch=$work_branch"
 	dbg "wip_branch=$wip_branch"
@@ -181,14 +184,7 @@ do_save () {
 
 	if wip_last=$(git rev-parse --quiet --verify $wip_branch)
 	then
-		local base=$(git merge-base $wip_last $work_last) \
-		|| die "'work_branch' and '$wip_branch' are unrelated."
-
-		if [ $base = $work_last ] ; then
-			wip_parent=$wip_last
-		else
-			wip_parent=$work_last
-		fi
+		wip_parent=$wip_last
 	else
 		wip_parent=$work_last
 	fi
@@ -226,7 +222,7 @@ do_info () {
 do_log () {
 	local work_branch=$1
 	[ -z $branch ] && work_branch=$(get_work_branch)
-	local wip_branch="$WIP_PREFIX$work_branch"
+	local wip_branch="$WIP_PREFIX$work_branch$WIP_SUFFIX"
 
 	local log_cmd="log"
 	local graph=""
