@@ -113,12 +113,15 @@ def _compute_name(name, extension, overwrite=False, path_name=SAVE_PATH):
         suffix = ''
     else:
         # add time at the end of the file name
-        suffix = '_' + time_string()
+        suffix_time = '_' + time_string()
+
         # check if the file already exists and add a suffix
         k = 0
-        while os.path.isfile(save_name + suffix + extension):
+        suffix = ''
+        while os.path.isfile(save_name + suffix_time + suffix + extension):
             k += 1
             suffix = '_%d' % k
+        suffix = suffix_time + suffix
 
     filename = save_name + suffix + extension
     return filename
