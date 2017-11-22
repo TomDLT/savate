@@ -13,7 +13,7 @@ It is based on a custom fork of <https://github.com/bartman/git-wip> and some pe
   ```console
   git clone https://github.com/tomdlt/savate.git
   cd savate
-  python setup.py install
+  pip install -e .
   ```
 
 2. Change `SAVE_PATH` in `savate/io.py` to a path that suits your need.
