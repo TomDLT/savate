@@ -125,7 +125,7 @@ build_new_tree () {
 
 do_save () {
 	local msg="$1" ; shift
-	local add_untracked=
+	local add_untracked=true
 	local add_ignored=
 
 	while test $# != 0
