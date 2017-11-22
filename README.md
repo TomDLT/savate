@@ -16,9 +16,7 @@ It is based on a custom fork of <https://github.com/bartman/git-wip> and some pe
   python setup.py install
   ```
 
-2. Copy the file named `git-wip` in a place accessible by your PATH.
-
-3. Change `SAVE_PATH` in `savate/io.py` to a path that suits your need.
+2. Change `SAVE_PATH` in `savate/io.py` to a path that suits your need.
 
 ## Example
 
