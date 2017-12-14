@@ -163,5 +163,9 @@ def commit_with_git_wip():
     script_name = _get_calling_script()
     commit_message = "autosave called from " + script_name
 
-    result = subprocess.run(["git", "wip", "save_silent", commit_message])
+    try:
+        result = subprocess.run(["git", "wip", "save_silent", commit_message])
+    except Exception as e:
+        print(e)
+        result = 1
     return result
