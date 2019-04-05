@@ -9,7 +9,7 @@ from scipy import io
 
 
 # directory to save the plots
-SAVE_PATH = os.environ['HOME'] + '/work/docs/ardriv_plots/'
+SAVE_PATH = os.environ['HOME'] + '/work/figures/'
 
 
 def save_fig(fig, name, extension='.png', *args, **kwargs):
@@ -95,10 +95,10 @@ def _compute_name(name, extension, overwrite=False, path_name=SAVE_PATH):
     filename: string
         A transformed filename
     """
-    script_name = _get_calling_script()
+    script_name, directory_name = _get_calling_script()
 
     # create directory with script name
-    directory = path_name + script_name
+    directory = os.path.join(path_name, directory_name, script_name)
     if not os.path.exists(directory):
         # add robustness to multiple threads creating the same directory
         try:
@@ -107,7 +107,7 @@ def _compute_name(name, extension, overwrite=False, path_name=SAVE_PATH):
             pass
 
     # add directory to file name
-    save_name = directory + '/' + name
+    save_name = os.path.join(directory, name)
 
     if overwrite:
         suffix = ''
@@ -143,12 +143,13 @@ def _get_calling_script():
         script_path = stack[-1][0]  # default
 
     script_name = os.path.basename(script_path)
+    directory_name = os.path.basename(os.path.dirname(script_path))
     if script_name[:14] == '<ipython-input':
         script_name = '<ipython>'
     if script_name[-3:] == '.py':
         script_name = script_name[:-3]
 
-    return script_name
+    return script_name, directory_name
 
 
 def time_string():
@@ -160,7 +161,7 @@ def time_string():
 
 
 def commit_with_git_wip():
-    script_name = _get_calling_script()
+    script_name, _ = _get_calling_script()
     commit_message = "autosave called from " + script_name
 
     try:
